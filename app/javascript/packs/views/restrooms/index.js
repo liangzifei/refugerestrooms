@@ -31,8 +31,10 @@ $(function(){
   if (getSearchParams().get('view') == 'map') {
     $("#list").hide();
     $.get('/restrooms' + window.location.search , {}, (points) => {
-      const lat = getSearchParams().get('lat');
-      const long = getSearchParams().get('long');
+      // Default to the first report, or New York City, when no location was searched.
+      const first = points && points.length ? points[0] : null;
+      const lat = getSearchParams().get('lat') || (first && first.latitude) || 40.7128;
+      const long = getSearchParams().get('long') || (first && first.longitude) || -74.0060;
 
       Maps.loadMapWithPoints(lat, long, points);
       $("#mapContainer").fadeIn(500);
