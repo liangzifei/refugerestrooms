@@ -1,0 +1,61 @@
+en:
+  activerecord:
+    attributes:
+      bed_bug_report:
+        # only overridden attributes here, defaults work as expected
+        name: 'Location/Place/Business Name'
+        street: 'Street Address'
+        state: 'State/Province'
+        verified: 'Verified?'
+        severe: 'Severity Level'
+
+  search_bar:
+    enter_location: 'Enter an address'
+
+  bed_bug_report:
+    add_new: 'Submit a bed bug report to our database'
+    preview: 'Preview'
+    required: '* marks required field'
+    guess_location: 'Guess current location'
+    directions: 'Directions/Details'
+    directions_hint: '(e.g.: found in mattress seams, seen in common areas...)'
+    distance:
+      miles: miles
+      kilometers: kilometers
+    comments_hint: '(e.g.: date spotted, type of evidence, treatment applied...)'
+    comments: 'Additional Comments'
+    verified: 'Verified Report'
+    not_verified: 'Unverified Report'
+    severity:
+      severe: 'Severe Infestation'
+      minor: 'Minor/Limited'
+    submit: 'Submit Report'
+    rating:
+      positive: '%{percentage}% helpful'
+      unrated: 'Not yet rated'
+    upvote: 'Helpful!'
+    downvote: 'Not helpful'
+    confirm:
+      upvote: 'Are you sure you want to mark this report as helpful?'
+      downvote: 'Are you sure you want to mark this report as not helpful?'
+    flash:
+      field: 'A required field has been left blank. Please recheck your submission and submit the form again.'
+      unexpected: 'We ran into an unexpected problem, please contact us if the problem continues.'
+      upvoteerror: 'There was an unexpected problem marking this report as helpful.'
+      upvotesuccess: 'This report has been marked as helpful! Thank you for contributing to our community.'
+      downvoteerror: 'There was an unexpected problem marking this report.'
+      downvotesuccess: 'This report has been marked as not helpful! Thank you for contributing to our community.'
+      new: 'A new bed bug report has been created for %{name}.'
+      edit: 'Your edit has been submitted. We will review it and update the listing'
+      updated: 'This bed bug report has been updated'
+      deleted: 'This bed bug report has been deleted'
+      searcherror: 'There was an error searching for your location.'
+      spam: 'Your submission was rejected as spam.'
+    edit:
+      editlisting: "Propose an edit to this report."
+
+  bed_bug_reports:
+    nearby:
+      heading: 'Nearby bed bug reports'
+      body: 'Before you submit a report, please ensure it is not already one of the known reports nearby.'
+      none: 'No bed bug reports were found nearby.'

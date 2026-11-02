@@ -1,0 +1,61 @@
+pt-BR:
+  activerecord:
+    attributes:
+      bed_bug_report:
+        # only overridden attributes here, defaults work as expected
+        name: 'Nome do Estabelecimento/Negócio/Local'
+        street: 'Endereço'
+        state: 'Estado'
+        verified: 'Verificado?'
+        severe: 'Nível de Severidade'
+
+  search_bar:
+    enter_location: 'Digite um endereço'
+
+  bed_bug_report:
+    add_new: 'Denuncie um caso de infestação de percevejo no banco de dados'
+    preview: 'Visualizar'
+    required: '* campo obrigatório'
+    guess_location: 'Adivinhar localização atual'
+    directions: 'Detalhes/Instruções'
+    directions_hint: '(por exemplo: encontrado nas costuras do colchão, visto em áreas comuns...)'
+    distance:
+      miles: milhas
+      kilometers: quilômetros
+    comments_hint: '(por exemplo: data da descoberta, tipo de evidência, tratamento aplicado...)'
+    comments: 'Comentários Adicionais'
+    verified: 'Relato Verificado'
+    not_verified: 'Relato Não Verificado'
+    severity:
+      severe: 'Infestação Severa'
+      minor: 'Limitada/Menor'
+    submit: 'Enviar Denúncia'
+    rating:
+      positive: '%{percentage}% útil'
+      unrated: 'Não avaliado'
+    upvote: 'Útil!'
+    downvote: 'Não útil'
+    confirm:
+      upvote: 'Tem certeza que deseja marcar este relato como útil?'
+      downvote: 'Tem certeza que deseja marcar este relato como não útil?'
+    flash:
+      field: 'Um campo obrigatório foi deixado em branco. Por favor revise seu cadastro e envie o formulário novamente.'
+      unexpected: 'Tivemos um problema inesperado, por favor entre em contato se o problema persistir.'
+      upvoteerror: 'Houve um problema inesperado ao marcar este relato como útil.'
+      upvotesuccess: 'Este relato foi marcado como útil! Obrigado por contribuir com a nossa comunidade.'
+      downvoteerror: 'Houve um problema inesperado ao avaliar este relato.'
+      downvotesuccess: 'Este relato foi marcado como não útil! Obrigado por contribuir com a nossa comunidade.'
+      new: 'Um novo relato de infestação foi criado para %{name}.'
+      edit: 'Sua edição foi enviada. Vamos revisar e atualizar a denúncia'
+      updated: 'Este relato de infestação foi atualizado'
+      deleted: 'Este relato de infestação foi removido'
+      searcherror: 'Houve um erro ao buscar a sua localização.'
+      spam: 'Seu envio foi rejeitado como spam.'
+    edit:
+      editlisting: "Propor uma edição para este relato."
+
+  bed_bug_reports:
+    nearby:
+      heading: 'Denúncias de percevejos próximas'
+      body: 'Antes de enviar um relato, por favor certifique-se de que ele já não está cadastrado.'
+      none: 'Nenhum relato de infestação foi encontrado por perto.'
