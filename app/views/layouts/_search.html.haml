@@ -1,7 +1,8 @@
 - splash = false if local_assigns[:splash].nil?
 
 .row.search-container
-  = form_tag restrooms_path, class: "search-restrooms-form", method: :get do
+  = form_tag bed_bug_reports_path, class: "search-restrooms-form", method: :get do
+    = hidden_field_tag :view, "map"
     = hidden_field_tag :lat, ""
     = hidden_field_tag :long, ""
     .input-group
