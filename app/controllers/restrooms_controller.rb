@@ -1,145 +1,56 @@
-require_relative '../helpers/recaptcha_helper'
+# Backward compatibility alias for BedBugReportsController
+# This controller is deprecated and kept only for compatibility during refactoring
+# New code should use BedBugReportsController instead
 
-# rubocop:disable Metrics/ClassLength
-class RestroomsController < ApplicationController
-  respond_to :html, :json
-
-  before_action :restrooms_filters, only: [:index]
-  before_action :list_restrooms, only: [:index]
-  before_action :find_restroom, only: %i[show update edit]
-
-  def index
-    @view = params[:view] || 'list'
-    if params[:nearby]
-      render :nearby, layout: false
-    else
-      respond_with @restrooms
-    end
-  end
-
-  def show; end
-
-  # rubocop:disable Metrics/MethodLength
-  def new
-    if params[:edit_id]
-      @restroom = find_restroom
-      @restroom.edit_id = params[:edit_id]
-      @restroom.approved = false
-    elsif params[:guess]
-      @restroom = Restroom.new(permitted_params)
-      @restroom.reverse_geocode
-      render 'new', layout: false
-    else
-      @restroom = Restroom.new
-    end
-  end
-  # rubocop:enable Metrics/MethodLength
-
-  def edit; end
-
-  # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/MethodLength
-  def create
-    @restroom = Restroom.new(permitted_params)
-
-    # Verify recaptcha code
-    recaptcha_response = params['g-recaptcha-response']
-    unless RecaptchaHelper.valid_token? recaptcha_response
-      flash.now[:error] = I18n.t('helpers.reCAPTCHA.failed')
-      render 'new'
-      return
-    end
-
-    @restroom = SaveRestroom.new(@restroom).call
-
-    if @restroom.errors.empty?
-      if @restroom.approved?
-        flash[:notice] = I18n.t('restroom.flash.new', name: @restroom.name)
-        redirect_to @restroom
-      else
-        flash[:notice] = I18n.t('restroom.flash.edit', name: @restroom.name)
-        redirect_to restroom_path(@restroom.edit_id)
-      end
-    elsif @restroom.errors.key?(:spam)
-      flash.now[:notice] = I18n.t('restroom.flash.spam')
-      render 'new'
-    else
-      display_errors
-      render 'new'
-    end
-  end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
-
-  # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/MethodLength
-  def update
-    if params[:restroom][:downvote]
-      Restroom.increment_counter(:downvote, @restroom.id) # rubocop:disable Rails/SkipsModelValidations
-    elsif params[:restroom][:upvote]
-      Restroom.increment_counter(:upvote, @restroom.id) # rubocop:disable Rails/SkipsModelValidations
-    elsif @restroom.update(permitted_params)
-      flash.now[:notice] = I18n.t('restroom.flash.updated')
-    else
-      display_errors
-      render 'edit'
-    end
-
-    redirect_to @restroom
-  end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
-
+class RestroomsController < BedBugReportsController
   private
 
-  def restrooms_filters
+  def bed_bug_reports_filters
     @filters =
       params
       .fetch(:filters, '')
       .split(',')
       .each_with_object({}) do |filter, filters|
-        filters[filter] = true if %w[accessible changing_table unisex].include?(filter)
+        # Map old filter names to new ones
+        filter = 'verified' if filter == 'accessible'
+        filter = 'severe' if filter == 'changing_table'
+        filters[filter] = true if %w[verified severe unisex].include?(filter)
       end
   end
 
-  # rubocop:disable Metrics/AbcSize
-  def list_restrooms
-    @restrooms = Restroom.current.where(@filters)
-    @restrooms =
+  def list_bed_bug_reports
+    @bed_bug_reports = BedBugReport.current.where(@filters)
+    # Use @restrooms as an alias for @bed_bug_reports for backward compatibility
+    @restrooms = @bed_bug_reports
+    @bed_bug_reports =
       if params[:search].present? || params[:map] == "1"
-        @restrooms.near([params[:lat], params[:long]], 20, order: 'distance')
+        @bed_bug_reports.near([params[:lat], params[:long]], 20, order: 'distance')
       else
-        @restrooms.reverse_order
+        @bed_bug_reports.reverse_order
       end
-    @pagy, @restrooms = pagy(@restrooms)[0].overflow? ? pagy(@restrooms, page: 1) : pagy(@restrooms)
-  end
-  # rubocop:enable Metrics/AbcSize
-
-  def display_errors
-    if @restroom.errors.any?
-      @restroom.errors.each do
-        flash[:alert] = I18n.t('restroom.flash.field')
-      end
-    else
-      flash[:alert] = I18n.t('restroom.flash.unexpected')
-    end
+    @pagy, @bed_bug_reports = pagy(@bed_bug_reports)[0].overflow? ? pagy(@bed_bug_reports, page: 1) : pagy(@bed_bug_reports)
+    @restrooms = @bed_bug_reports
   end
 
-  def find_restroom
-    @restroom = Restroom.find(params[:id])
+  def find_bed_bug_report
+    @bed_bug_report = BedBugReport.find(params[:id])
+    # Create @restroom alias for backward compatibility
+    @restroom = @bed_bug_report
   end
 
-  # rubocop:disable Metrics/MethodLength
   def permitted_params
-    params.require(:restroom).permit(
+    # Map old parameter names to new ones
+    bed_bug_params = params[:bed_bug_report] || params[:restroom]
+    return {} unless bed_bug_params
+
+    params.require(params[:bed_bug_report] ? :bed_bug_report : :restroom).permit(
       :name,
       :street,
       :city,
       :state,
       :country,
-      :accessible,
-      :changing_table,
-      :unisex,
+      :verified,
+      :severe,
       :directions,
       :comment,
       :longitude,
@@ -148,6 +59,4 @@ class RestroomsController < ApplicationController
       :approved
     )
   end
-  # rubocop:enable Metrics/MethodLength
 end
-# rubocop:enable Metrics/ClassLength

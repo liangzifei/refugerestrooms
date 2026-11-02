@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
     ActiveAdmin.routes(self)
+    resources :bed_bug_reports, except: [:edit, :destroy]
+    # Backward compatibility alias for restrooms
     resources :restrooms, except: [:edit, :destroy]
 
     namespace :api do
