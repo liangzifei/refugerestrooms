@@ -11,9 +11,14 @@
     .col-xs-12.col-sm-8.col-sm-offset-2
       = render partial: "layouts/search", locals: {splash: true}
 
-  .row.more-headroom.splash-bottom-padding
+  .row.more-headroom
     .col-xs-12.col-sm-6.col-sm-offset-3
       = button_to new_bed_bug_report_path, method: :get, class: "btn btn-lg btn-purple splash-add-restroom-btn" do
         Report Bed Bugs
         %i.fa.fa-plus-square-o.fa-2x
+  .row.more-headroom.splash-bottom-padding
+    .col-xs-12.col-sm-6.col-sm-offset-3
+      = link_to bed_bug_reports_path(view: 'map'), class: "btn btn-lg btn-purple splash-add-restroom-btn", style: "display: block;" do
+        View Map
+        %i.fa.fa-map-o.fa-2x
   = render 'layouts/footer'
