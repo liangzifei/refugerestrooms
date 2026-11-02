@@ -1,6 +1,11 @@
 class RatingLevel
   def self.for_restroom(restroom)
-    percentage = restroom.rating_percentage
+    # Backward compatibility: restroom is now a BedBugReport
+    for_bed_bug_report(restroom)
+  end
+
+  def self.for_bed_bug_report(report)
+    percentage = report.rating_percentage
 
     if percentage > 70
       green
