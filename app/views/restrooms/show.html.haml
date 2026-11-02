@@ -1,7 +1,10 @@
+/ Backward compatibility view - delegates to bed_bug_reports
+- @bed_bug_report ||= @restroom
+
 .row.headroom
   .col-xs-12
-    .listItem.showPageItem{"data-id" => @restroom.id}
-      = render partial: 'restrooms/restroom', locals: { restroom: @restroom }
+    .listItem.showPageItem{"data-id" => @bed_bug_report.id}
+      = render partial: 'bed_bug_reports/bed_bug_report', locals: { bed_bug_report: @bed_bug_report }
 
 .showPageContent
   .row
@@ -22,17 +25,17 @@
     .col-xs-12
 
       %p
-        %strong #{t('restroom.directions')}:
-        = @restroom.directions
+        %strong #{t('bed_bug_report.directions')}:
+        = @bed_bug_report.directions
       %p
-        %strong #{t('restroom.comments')}:
-        = @restroom.comment
-      %p= link_to t('restroom.edit.editlisting'), new_restroom_path(id: @restroom.id, restroom_name: @restroom.name, edit_id: @restroom.edit_id)
+        %strong #{t('bed_bug_report.comments')}:
+        = @bed_bug_report.comment
+      %p= link_to t('bed_bug_report.edit.editlisting'), new_restroom_path(id: @bed_bug_report.id, bed_bug_report_name: @bed_bug_report.name, edit_id: @bed_bug_report.edit_id)
   .row
     .col-xs-12
       #map
-        %div#mapArea{ data: { latitude: @restroom.latitude, longitude: @restroom.longitude } }
+        %div#mapArea{ data: { latitude: @bed_bug_report.latitude, longitude: @bed_bug_report.longitude } }
       %hr
   .row
     .col-xs-12
-      = render partial: 'layouts/disqus_tag', locals: { identifier: "restroom-#{@restroom.id}", title: @restroom.name, url: request.original_url }
+      = render partial: 'layouts/disqus_tag', locals: { identifier: "bed-bug-report-#{@bed_bug_report.id}", title: @bed_bug_report.name, url: request.original_url }

@@ -1,0 +1,26 @@
+.row
+  .col-xs-12.headroom
+    #filters.clearfix
+      .btn-group{:data => {:toggle => "buttons"}}
+        %button#verified_filter.filter.btn.btn-light-purple.linkbutton{:title => t("bed_bug_report.verified"), :class => ("active" if @filters.keys.include?('verified'))}
+          %input{:type => "checkbox", :checked => @filters.keys.include?('verified')}
+          %i.fa.fa-check-circle
+        %button#severe_filter.filter.btn-light-purple.btn.linkbutton{:title => t("bed_bug_report.severity.severe"), :class => ("active" if @filters.keys.include?('severe'))}
+          %input{:type => "checkbox", :checked => @filters.keys.include?('severe')}
+          %i.fa.fa-warning
+
+      - view_label = @view == 'map' ? 'List View' : 'Map View'
+      - view_toggle = @view == 'map' ? {view: 'list'} : {view: 'map'}
+      = link_to view_label, bed_bug_reports_path(request.query_parameters.merge(view_toggle)), class: 'map-toggle-btn linkbutton btn pull-right btn-lg btn-light-purple'
+
+.bed-bug-reports-index-content
+  .row
+    .col-sm-12.headroom
+      #results
+        = content_tag 'div', id: 'mapContainer', data: { latitude: params[:lat], longitude: params[:long] } do
+          #mapArea
+  .row
+    .col-sm-12.headroom
+      %ul{:class => "bed-bug-reports-list", :id => "list"}
+        = render @bed_bug_reports
+        != pagy_nav @pagy

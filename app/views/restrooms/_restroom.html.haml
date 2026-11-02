@@ -1,40 +1,38 @@
-- unisex_class = restroom.unisex? ? '' : 'not_unisex'
-- accessible_class = restroom.accessible? ? '' : 'not_accessible'
-- changing_table_class = restroom.changing_table? ? '' : 'no_changing_table'
+/ Backward compatibility partial - now uses BedBugReport
+- bed_bug_report = restroom
+- severe_class = bed_bug_report.severe? ? 'severe' : 'minor'
+- verified_class = bed_bug_report.verified? ? 'verified' : 'unverified'
 
-%li{ class: "listItem clearfix #{unisex_class} #{accessible_class} #{changing_table_class}",
-          data: { id: restroom.id} }
+%li{ class: "listItem clearfix #{severe_class} #{verified_class}",
+          data: { id: bed_bug_report.id} }
   .listItemImage
     / image tag goes here
   .itemInfo
-    .itemName= link_to_unless_current(restroom.name.titleize, restroom)
-    .itemStreet="#{restroom.street}, #{restroom.city}, #{restroom.state}"
-    - if restroom.rated?
-      - rating_class_name = case RatingLevel.for_restroom(restroom)
+    .itemName= link_to_unless_current(bed_bug_report.name.titleize, bed_bug_report)
+    .itemStreet="#{bed_bug_report.street}, #{bed_bug_report.city}, #{bed_bug_report.state}"
+    - if bed_bug_report.rated?
+      - rating_class_name = case RatingLevel.for_bed_bug_report(bed_bug_report)
       - when RatingLevel.green  then 'greenRating'
       - when RatingLevel.yellow then 'yellowRating'
       - when RatingLevel.red    then 'redRating'
       - else ''
       %div{:class => "itemRating #{rating_class_name}"}
-        = t('restroom.rating.positive', percentage: restroom.rating_percentage.round)
+        = t('bed_bug_report.rating.positive', percentage: bed_bug_report.rating_percentage.round)
     - else
-      .itemRating= t('restroom.rating.unrated')
+      .itemRating= t('bed_bug_report.rating.unrated')
 
   .itemExtraInfo
     .itemDistance
-      - if restroom.respond_to?(:distance)
-        = restroom.distance.round(2)
-        = t("restroom.distance.miles")
+      - if bed_bug_report.respond_to?(:distance)
+        = bed_bug_report.distance.round(2)
+        = t("bed_bug_report.distance.miles")
         \/
-        = miles_to_kilometers(restroom.distance).round(2)
-        = t("restroom.distance.kilometers")
+        = miles_to_kilometers(bed_bug_report.distance).round(2)
+        = t("bed_bug_report.distance.kilometers")
     .itemIcons
-      - if restroom.unisex?
-        .unisexRestroom{:title => t("restroom.type.unisex")}
-          %i.fa.fa-transgender-alt.fa-2x
-      - if restroom.accessible?
-        .ADARestroom{:title => t("restroom.accessible")}
-          %i.fa.fa-wheelchair.fa-2x
-      - if restroom.changing_table?
-        .changingTable{:title => t("restroom.changing_table")}
-          %i.fa.fa-child.fa-2x
+      - if bed_bug_report.verified?
+        .verifiedReport{:title => t("bed_bug_report.verified")}
+          %i.fa.fa-check-circle.fa-2x
+      - if bed_bug_report.severe?
+        .severeReport{:title => t("bed_bug_report.severity.severe")}
+          %i.fa.fa-warning.fa-2x

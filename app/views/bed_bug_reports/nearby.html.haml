@@ -1,0 +1,8 @@
+- if @bed_bug_reports.empty?
+  .none
+    %p= t('.none')
+- else
+  %h2= t('.heading')
+  %p= t('.body')
+  .minimalBedBugReportList= render @bed_bug_reports
+  .clearfix

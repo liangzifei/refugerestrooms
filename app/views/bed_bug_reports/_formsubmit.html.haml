@@ -1,0 +1,36 @@
+%h1= t('bed_bug_report.add_new')
+
+= simple_form_for @bed_bug_report, :url => bed_bug_reports_path, :method => :post, html: {class: 'submit-new-bedbug-form form-vertical'} do |f|
+  %h5= t('bed_bug_report.required')
+  .clearfix
+    %button.btn.btn-light-purple.guess-btn{:type => "button", :value => t('bed_bug_report.guess_location')}
+      = t('bed_bug_report.guess_location')
+      %i.fa.fa-refresh.fa-spin
+
+  / Add map for preview
+  #mapArea.hidden{ data: { latitude: 38.904735, longitude: -77.033812 } }
+
+  .nearby-container.footroom
+    // Content of nearby bed bug reports gets rendered here.
+
+  = f.input :name, :required => true
+  = f.input :street, :required => true
+  = f.input :city, :required => true
+  = f.input :state, :required => true
+  = f.input :country, priority: ["United States", "Canada", "United Kingdom"], :required => true, input_html: {class: 'form-control'}
+  = f.hidden_field :latitude
+  = f.hidden_field :longitude
+  = f.hidden_field :edit_id
+  = f.hidden_field :approved
+  = f.input :verified, :collection => [[t('bed_bug_report.verified'), true], [t('bed_bug_report.not_verified'), false]], :include_blank => false
+  = f.input :severe, :collection => [[t('bed_bug_report.severity.severe'), true], [t('bed_bug_report.severity.minor'), false]], :include_blank => false
+  = f.input :directions, :placeholder => t('bed_bug_report.directions_hint'), :as => :text, :required => false, :input_html => { :class => "span6" }
+  = f.input :comment, :placeholder => t('bed_bug_report.comments_hint'), :as => :text, :required => false, :input_html => { :class => "span6" }
+
+  .form-group
+    .g-recaptcha{'data-sitekey' => "#{ENV['RECAPTCHA_SITE_KEY']}"}
+
+  / Click to preview location
+  %button{type: 'button', class: 'preview-btn linkbutton'}
+    = t('bed_bug_report.preview')
+  = f.button :submit, t('bed_bug_report.submit'), :class => "linkbutton"

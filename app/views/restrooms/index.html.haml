@@ -1,22 +1,22 @@
+/ Backward compatibility view - delegates to bed_bug_reports
+- @bed_bug_reports ||= @restrooms
+
 .row
   .col-xs-12.headroom
     #filters.clearfix
       .btn-group{:data => {:toggle => "buttons"}}
-        %button#ada_filter.filter.btn.btn-light-purple.linkbutton{:title => t("restroom.accessible"), :class => ("active" if @filters.keys.include?('accessible'))}
-          %input{:type => "checkbox", :checked => @filters.keys.include?('accessible')}
-          %i.fa.fa-wheelchair
-        %button#unisex_filter.filter.btn-light-purple.btn.linkbutton{:title => t("restroom.type.unisex"), :class => ("active" if @filters.keys.include?('unisex'))}
-          %input{:type => "checkbox", :checked => @filters.keys.include?('unisex')}
-          %i.fa.fa-transgender-alt
-        %button#changing_table_filter.filter.btn-light-purple.btn.linkbutton{:title => t("restroom.changing_table"), :class => ("active" if @filters.keys.include?('changing_table'))}
-          %input{:type => "checkbox", :checked => @filters.keys.include?('changing_table')}
-          %i.fa.fa-child
+        %button#verified_filter.filter.btn.btn-light-purple.linkbutton{:title => t("bed_bug_report.verified"), :class => ("active" if @filters.keys.include?('verified'))}
+          %input{:type => "checkbox", :checked => @filters.keys.include?('verified')}
+          %i.fa.fa-check-circle
+        %button#severe_filter.filter.btn-light-purple.btn.linkbutton{:title => t("bed_bug_report.severity.severe"), :class => ("active" if @filters.keys.include?('severe'))}
+          %input{:type => "checkbox", :checked => @filters.keys.include?('severe')}
+          %i.fa.fa-warning
 
       - view_label = @view == 'map' ? 'List View' : 'Map View'
       - view_toggle = @view == 'map' ? {view: 'list'} : {view: 'map'}
       = link_to view_label, restrooms_path(request.query_parameters.merge(view_toggle)), class: 'map-toggle-btn linkbutton btn pull-right btn-lg btn-light-purple'
 
-.restrooms-index-content
+.bed-bug-reports-index-content
   .row
     .col-sm-12.headroom
       #results
@@ -24,8 +24,8 @@
           #mapArea
   .row
     .col-sm-12.headroom
-      %ul{:class => "restrooms-list", :id => "list"}
-        = render @restrooms
+      %ul{:class => "bed-bug-reports-list", :id => "list"}
+        = render @bed_bug_reports
         != pagy_nav @pagy
 / .row
 /   .col-xs-12.headroom

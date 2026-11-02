@@ -1,0 +1,36 @@
+- severe_class = bed_bug_report.severe? ? 'severe' : 'minor'
+- verified_class = bed_bug_report.verified? ? 'verified' : 'unverified'
+
+%li{ class: "listItem clearfix #{severe_class} #{verified_class}",
+          data: { id: bed_bug_report.id} }
+  .listItemImage
+    / image tag goes here
+  .itemInfo
+    .itemName= link_to_unless_current(bed_bug_report.name.titleize, bed_bug_report)
+    .itemStreet="#{bed_bug_report.street}, #{bed_bug_report.city}, #{bed_bug_report.state}"
+    - if bed_bug_report.rated?
+      - rating_class_name = case RatingLevel.for_bed_bug_report(bed_bug_report)
+      - when RatingLevel.green  then 'greenRating'
+      - when RatingLevel.yellow then 'yellowRating'
+      - when RatingLevel.red    then 'redRating'
+      - else ''
+      %div{:class => "itemRating #{rating_class_name}"}
+        = t('bed_bug_report.rating.positive', percentage: bed_bug_report.rating_percentage.round)
+    - else
+      .itemRating= t('bed_bug_report.rating.unrated')
+
+  .itemExtraInfo
+    .itemDistance
+      - if bed_bug_report.respond_to?(:distance)
+        = bed_bug_report.distance.round(2)
+        = t("bed_bug_report.distance.miles")
+        \/
+        = miles_to_kilometers(bed_bug_report.distance).round(2)
+        = t("bed_bug_report.distance.kilometers")
+    .itemIcons
+      - if bed_bug_report.verified?
+        .verifiedReport{:title => t("bed_bug_report.verified")}
+          %i.fa.fa-check-circle.fa-2x
+      - if bed_bug_report.severe?
+        .severeReport{:title => t("bed_bug_report.severity.severe")}
+          %i.fa.fa-warning.fa-2x
